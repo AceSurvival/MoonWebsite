@@ -1,0 +1,27 @@
+name: Auto Deploy
+
+# This workflow automatically deploys the site whenever code is pushed to main/master
+# It works with Vercel, Netlify, or any platform that auto-deploys from GitHub
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Deployment Notification
+        run: |
+          echo "🚀 Code pushed to GitHub!"
+          echo "📦 If connected to Vercel/Netlify, deployment will start automatically."
+          echo "✅ Check your deployment platform dashboard for status."

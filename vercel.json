@@ -1,0 +1,12 @@
+{
+  "crons": [
+    {
+      "path": "/api/cart/process-abandoned",
+      "schedule": "*/10 * * * *"
+    },
+    {
+      "path": "/api/orders/check-unpaid",
+      "schedule": "0 * * * *"
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  sessions     Session[]
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  sessionId String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+}
+
+model Product {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  description     String
+  shortDescription String? // Short description for product cards/previews
+  price           Float
+  salePrice       Float?   // Sale price if product is on sale
+  category        String
+  imageUrl        String?
+  extraImages     String?  // JSON array of image URLs
+  purity          String?
+  vialSize        String?
+  coaLink         String?  // Certificate of Analysis link
+  codename        String?  // Short code name (e.g., Reta, Tirz)
+  stock           Int?
+  outOfStock      Boolean  @default(false) // Out of stock flag
+  featured        Boolean  @default(false)
+  active          Boolean  @default(true)
+  parentProductId String?  // If set, this is a variant of the parent product
+  variantName     String?  // Variant identifier (e.g., "10mg", "20mg")
+  variantImageUrl String?  // Specific image for this variant
+  sortOrder       Int?     // Sort order for variants (lower = first)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  orderItems      OrderItem[]
+  parentProduct   Product? @relation("ProductVariants", fields: [parentProductId], references: [id], onDelete: Cascade)
+  variants        Product[] @relation("ProductVariants")
+}
+
+model Order {
+  id              String      @id @default(uuid())
+  orderNumber     String      @unique
+  customerName    String
+  email           String
+  phone           String?     // Optional phone number
+  paymentMethod   String      // ZELLE, BITCOIN, or CASHAPP
+  status          String      @default("PENDING_PAYMENT") // PENDING_PAYMENT, PAID, SHIPPED, or CANCELED
+  totalAmount     Float
+  subtotalAmount  Float?      // Subtotal before tax and shipping
+  taxAmount       Float?      @default(0)
+  shippingAmount  Float?      @default(0)
+  shippingMethod  String?     // Shipping method (e.g., "USPS/UPS Standard", "UPS 2 Day", "FedEx 2 Day")
+  shippingProvider String?   // Shipping provider (UPS, USPS, FedEx, DHL)
+  shippingAddress String      // JSON string
+  billingAddress  String?     // JSON string (optional, if different from shipping)
+  orderNotes      String?     // Customer notes for the order
+  adminNotes      String?     // Internal notes (admin only, for this order)
+  trackingNumber  String?     // Tracking number for shipped orders
+  discountCodeId  String?
+  discountAmount    Float?      @default(0)
+  paymentReminderCount Int      @default(0)  // 0=none, 1=24h, 2=48h, 3=70h (final)
+  lastPaymentReminderAt DateTime?  // When we last sent a payment reminder
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+  discountCode    DiscountCode? @relation(fields: [discountCodeId], references: [id])
+  creatorCodes    CreatorCodeUsage[]
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Float
+}
+
+model Faq {
+  id        String   @id @default(uuid())
+  question  String
+  answer    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED_AMOUNT
+}
+
+model DiscountCode {
+  id              String       @id @default(uuid())
+  code            String       @unique
+  discountType    DiscountType @default(PERCENTAGE)
+  discountPercent Float?       // For percentage discounts
+  discountAmount  Float?       // For fixed dollar amount discounts
+  active          Boolean      @default(true)
+  expiryDate      DateTime?
+  uses            Int          @default(0) // Number of times this code has been used
+  revenueGenerated Float       @default(0) // Total revenue from orders using this code (only PAID orders)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  orders          Order[]
+}
+
+model CreatorCode {
+  id          String   @id @default(uuid())
+  code        String   @unique
+  discountPercent Float
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  usages      CreatorCodeUsage[]
+}
+
+model CreatorCodeUsage {
+  id            String   @id @default(uuid())
+  creatorCodeId String
+  creatorCode   CreatorCode @relation(fields: [creatorCodeId], references: [id])
+  orderId       String
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  revenueAmount Float
+  createdAt     DateTime @default(now())
+}
+
+model NewsletterSubscription {
+  id        String   @id @default(uuid())
+  email     String   // Encrypted email
+  subscribed Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([email])
+  @@index([subscribed])
+}
+
+
+
