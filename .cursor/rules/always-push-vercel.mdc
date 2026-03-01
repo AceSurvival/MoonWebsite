@@ -1,13 +1,13 @@
 ---
-description: After making changes, always commit and push to origin so Vercel deploys
+description: After making changes, always commit, push to main, and deploy to Vercel
 alwaysApply: true
 ---
 
-# Always push to Vercel
+# Always push to main and Vercel
 
 After completing code or config changes to this project:
 
 1. Stage and commit the changed files (use a clear commit message).
 2. Push to the remote: `git push origin main`.
 
-The project is deployed on Vercel from the GitHub repo; pushing to `main` triggers a new deployment. Do not skip the push step unless the user asks not to deploy.
+The project is deployed on Vercel from the GitHub repo; pushing to `main` triggers a new deployment. Always push to `main` so Vercel redeploys. Do not skip the push step unless the user asks not to deploy.
