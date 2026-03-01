@@ -159,13 +159,13 @@ export default function AdminSettingsPage() {
               type="email"
               value={formData.fromEmail}
               onChange={(e) => setFormData({ ...formData, fromEmail: e.target.value })}
-              placeholder="support@highrollerpeps.com"
+              placeholder="support@moonbeautyalchemy.com"
               className="w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-gray-100 focus:outline-none focus:border-purple-500 dark:focus:border-purple-500"
             />
             <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
               <strong>This is the "from" address customers will see</strong> for order confirmations, status updates, and shipping notifications.
               <br />
-              <strong>Recommended:</strong> support@highrollerpeps.com
+              <strong>Recommended:</strong> support@moonbeautyalchemy.com
               <br />
               Must be verified with Resend before use.
             </p>
@@ -195,9 +195,9 @@ export default function AdminSettingsPage() {
               <li>Sign up for <a href="https://resend.com" target="_blank" rel="noopener noreferrer" className="text-purple-600 hover:underline">Resend</a> (free tier available)</li>
               <li>Get your API key from Resend dashboard</li>
               <li>Add <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">RESEND_API_KEY</code> to your Vercel environment variables</li>
-              <li>Verify your domain <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">highrollerpeps.com</code> in Resend Dashboard → Domains</li>
+              <li>Verify your domain <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">moonbeautyalchemy.com</code> in Resend Dashboard → Domains</li>
               <li>Add the DNS records Resend provides to your domain</li>
-              <li>Once verified, set "From Email" to <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">support@highrollerpeps.com</code></li>
+              <li>Once verified, set "From Email" to <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">support@moonbeautyalchemy.com</code></li>
               <li>Set "Contact Email" to <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">ace.mc.owner@gmail.com</code> to receive all emails</li>
             </ol>
           </div>
