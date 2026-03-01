@@ -4,15 +4,15 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined
 }
 
-// Create Prisma client with connection pooling and better error handling.
-// Do not call $connect() at module load — Prisma connects on first query, and
-// connecting during build (when Next collects route data) can fail on Vercel.
+// Use a placeholder URL when DATABASE_URL is missing so PrismaClient can be
+// constructed during Vercel build (env vars may not be available then). At
+// runtime on Vercel, DATABASE_URL is set and the real DB is used.
+const databaseUrl = process.env.DATABASE_URL || 'postgresql://build:build@localhost:5432/build'
+
 export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
   datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
+    db: { url: databaseUrl },
   },
 })
 
