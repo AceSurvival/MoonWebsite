@@ -1,10 +1,10 @@
-import { prisma } from '@/lib/prisma'
 import Link from 'next/link'
 
 // Force dynamic rendering - this page requires database access
 export const dynamic = 'force-dynamic'
 
 async function getStats() {
+  const { prisma } = await import('@/lib/prisma')
   const [products, orders, discountCodes, creatorCodes] = await Promise.all([
     prisma.product.count(),
     prisma.order.count(),
