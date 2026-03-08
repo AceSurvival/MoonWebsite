@@ -42,12 +42,14 @@ async function getStats() {
   return { products, orders, discountCodes, creatorCodes, recentOrders }
 }
 
+type Stats = Awaited<ReturnType<typeof getStats>>
+
 export default async function AdminDashboard() {
   let products = 0
   let orders = 0
-  let discountCodes: Awaited<ReturnType<typeof prisma.discountCode.findMany>> = []
-  let creatorCodes: Awaited<ReturnType<typeof prisma.creatorCode.findMany>> = []
-  let recentOrders: Awaited<ReturnType<typeof prisma.order.findMany>> = []
+  let discountCodes: Stats['discountCodes'] = []
+  let creatorCodes: Stats['creatorCodes'] = []
+  let recentOrders: Stats['recentOrders'] = []
   let dbError: string | null = null
 
   try {
