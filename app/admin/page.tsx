@@ -43,7 +43,43 @@ async function getStats() {
 }
 
 export default async function AdminDashboard() {
-  const { products, orders, discountCodes, creatorCodes, recentOrders } = await getStats()
+  let products = 0
+  let orders = 0
+  let discountCodes: Awaited<ReturnType<typeof prisma.discountCode.findMany>> = []
+  let creatorCodes: Awaited<ReturnType<typeof prisma.creatorCode.findMany>> = []
+  let recentOrders: Awaited<ReturnType<typeof prisma.order.findMany>> = []
+  let dbError: string | null = null
+
+  try {
+    const stats = await getStats()
+    products = stats.products
+    orders = stats.orders
+    discountCodes = stats.discountCodes
+    creatorCodes = stats.creatorCodes
+    recentOrders = stats.recentOrders
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err)
+    dbError = message
+    console.error('Admin dashboard getStats failed:', err)
+  }
+
+  if (dbError) {
+    return (
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold mb-8 gradient-text">Dashboard</h1>
+        <div className="bg-amber-900/30 border border-amber-600/50 text-amber-200 p-6 rounded-xl">
+          <h2 className="text-lg font-semibold mb-2">Database connection error</h2>
+          <p className="text-sm mb-4">The dashboard could not load. This usually means:</p>
+          <ul className="list-disc list-inside text-sm space-y-1 mb-4">
+            <li><strong>DATABASE_URL</strong> is not set in Vercel (Settings → Environment Variables → add for Production).</li>
+            <li>Database URL is wrong or the database is not reachable.</li>
+            <li>Tables are missing — run <code className="bg-black/30 px-1 rounded">npx prisma db push</code> or migrations against your production DB.</li>
+          </ul>
+          <p className="text-xs text-amber-300/80 font-mono break-all">Error: {dbError}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="max-w-7xl mx-auto">
