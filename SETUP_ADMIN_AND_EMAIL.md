@@ -1,15 +1,15 @@
-# Moon Beauty Alchemy – Setup Guide for New Owners
+# How to set up the Moon Beauty Alchemy site
 
-This guide is for the person who is taking over the website. You don’t need to be a developer. Follow the steps in order on a **Windows PC**. If you get stuck, ask the person who gave you the site for help.
+Hey — here’s how to get the site running on your side. You don’t need to be a developer; just follow the steps in order on a **Windows PC**. If anything’s confusing or something doesn’t work, text me and we’ll sort it out.
 
 ---
 
 ## What you’ll need before you start
 
 - An **email address** you can use for new accounts.
-- A **password** you want to use to log in to the **admin panel** (the private area where you manage the site). Make it strong and don’t share it.
+- A **password** you want to use to log in to the **admin panel** (the private bit where you manage orders and settings). Make it strong and keep it to yourself.
 - Your **website address** (e.g. `moonbeautyalchemy.com`), if you already have one.
-- **(Optional)** If you will run the “create admin” step yourself: the **website folder** on your computer (the person who gave you the site can send or copy it to you).
+- **(Optional)** If you’re doing the “create admin” step yourself: the **website folder** on your computer (I can send it to you or put it on a USB / cloud link).
 
 ---
 
@@ -21,10 +21,9 @@ GitHub is where the website’s code is stored. Vercel (the service that hosts t
 2. Click **Sign up** (top right).
 3. Enter your **email**, a **password**, and a **username**. Click **Create account**.
 4. Confirm your email if GitHub asks you to (check your inbox and click the link).
-5. **Get access to the website’s repository (repo):**
-   - The **previous owner** must add you to the project. They do this on GitHub by going to the repo → **Settings** → **Collaborators** → **Add people** and entering your GitHub username or email.
-   - You will get an **email invite** from GitHub. Open it and click **Accept invite**.
-   - After that, you should see the website’s repo when you’re logged in to GitHub.
+5. **Get access to the website’s repo:**
+   - I’ll add you to the project on GitHub (I need your GitHub username or the email you signed up with). Once I’ve done that, you’ll get an **email invite** from GitHub — open it and click **Accept invite**.
+   - After that, you should see the website repo when you’re logged in to GitHub.
 
 You don’t need to download or edit the code. You just need an account and access to that repo.
 
@@ -82,7 +81,7 @@ The site needs a few **settings** (called environment variables) to run. You add
 | `ADMIN_EMAIL` | The email address you want to use to **log in to the admin panel** (e.g. your personal or business email). |
 | `ADMIN_PASSWORD` | The **password** you want for the admin panel. Use a strong password. |
 | `RESEND_API_KEY` | You’ll get this in **Step 6** (Resend). You can add a placeholder like `todo` for now and come back to change it. |
-| `ENCRYPTION_KEY` | A long random string. Search online for “random 64 character hex generator” and copy one 64-character string. Or ask the person who gave you the site to generate one for you. |
+| `ENCRYPTION_KEY` | A long random string. Search online for “random 64 character hex generator” and copy one 64-character string. Or I can generate one for you and send it over. |
 | `NEXT_PUBLIC_SITE_URL` | Your site’s full address: `https://yoursite.vercel.app` or `https://moonbeautyalchemy.com` if you already connected your domain. |
 
 4. After you add or change any variable, **redeploy** the site: go to the **Deployments** tab, click the **⋯** next to the latest deployment, and choose **Redeploy**.
@@ -91,7 +90,7 @@ The site needs a few **settings** (called environment variables) to run. You add
 
 ## Step 5: Create your admin login (one-time setup)
 
-The **admin panel** is where you log in to manage orders and settings. Someone has to “create” that login once by running a small script. You can do it yourself on Windows, or ask the person who gave you the site to do it.
+The **admin panel** is where you log in to manage orders and settings. That login has to be “created” once by running a small script. You can do it yourself on Windows (Option A), or I can do it for you (Option B).
 
 ### Option A: You do it on your Windows PC
 
@@ -99,8 +98,8 @@ The **admin panel** is where you log in to manage orders and settings. Someone h
    - Go to **https://nodejs.org**
    - Download the **LTS** version (green button).
    - Run the installer and click **Next** until it finishes.
-2. Get the **website folder** on your computer (e.g. on the Desktop or in Downloads). The person who gave you the site may have sent it as a ZIP – if so, right‑click the ZIP → **Extract All** and open the extracted folder.
-3. Inside that folder, create a new text file named **`.env`** (with the dot at the start). Open it with Notepad and paste these three lines, **replacing** the values with your real ones:
+2. Get the **website folder** on your computer (e.g. on the Desktop or in Downloads). I may have sent it as a ZIP — if so, right‑click the ZIP → **Extract All** and open the extracted folder.
+3. Inside that folder, create a new text file named **`.env`** (with the dot at the start — if you’re not sure how, I can walk you through it). Open it with Notepad and paste these three lines, **replacing** the values with your real ones:
    ```
    DATABASE_URL="paste your Supabase connection string here"
    ADMIN_EMAIL="your@email.com"
@@ -118,14 +117,14 @@ The **admin panel** is where you log in to manage orders and settings. Someone h
    Press **Enter**.
 7. You should see a message like **Admin user created!** or **Admin password updated!**. If you see an error, check that `.env` has the correct `DATABASE_URL` (same as in Vercel) and that you’re in the right folder.
 
-### Option B: Someone else does it for you
+### Option B: I do it for you
 
-Give the person who set up the site:
+Send me:
 
-- Your **database connection string** (same as `DATABASE_URL` in Vercel).
+- Your **database connection string** (the same one you put in Vercel as `DATABASE_URL`).
 - The **admin email** and **admin password** you want to use.
 
-They run `node scripts/init-admin.js` on their computer with those values in a `.env` file. After that, you can log in from any computer.
+I’ll run the script on my side. Once that’s done, you can log in from any computer.
 
 ### Logging in to the admin panel
 
@@ -178,4 +177,4 @@ In Resend, go to **Domains** → **Add Domain** and type your domain. Resend wil
 - [ ] In **Admin → Settings** you set **From Email** and **Contact Email** and saved.
 - [ ] You **tested** the contact form and received the email at your Contact Email.
 
-If all of these are done, your website, admin panel, and email are set up. You can give this guide to the next owner if you ever pass the site on.
+If all of these are done, you’re all set — the site, admin panel, and email should be working. If you ever pass the site on to someone else, you can send them this guide too.
